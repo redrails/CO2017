@@ -8,12 +8,22 @@ import java.nio.file.Paths;
 import java.nio.file.NoSuchFileException;
 import java.util.Scanner;
 
+/**
+  * This class will read the file for pedestrian and make objects accordingly.
+  * @author mic7
+*/
+
 public class PedHandler implements Runnable {
 
 	private ThreadPoolExecutor traffic;
 	private ZebraCrossing zebraCrossing;
 	private String file;
 
+	/**
+	  * @param e - ThreadPoolExecutor for holding the threads that will be used and executed.
+	  * @param z - ZebraCrossing the ZebraCrossing resource being used.
+	  * @param f - The filename as string.
+	  */
 	public PedHandler(ThreadPoolExecutor e, ZebraCrossing z, String f) {
 
 		this.traffic = e;
@@ -21,6 +31,15 @@ public class PedHandler implements Runnable {
 		this.file = f;
 
 	}
+
+
+	/**
+	  * The run method which will read the file and make objects.
+	  * @see Scanner
+	  * By using Scanner we can read the files, the data is seperated by the ':' delimiter so we filter this
+	  * At each line we read, we add a pause*100 and then create the person object with the appropriate params.
+	  * It will be essential to execute these objects in the ThreadPoolExecutor because this will add it to the resource being used.
+	  */
 
 	public void run() {
 
@@ -44,13 +63,12 @@ public class PedHandler implements Runnable {
 
 	file.close();
 	
-	} catch (NoSuchFileException e) {
+	} catch (NoSuchFileException e) {	// Catch missing file exceptions.
 		System.exit(1);
-	} catch (IOException e) {
+	} catch (IOException e) {			// Catch input/output exceptions.
 		System.err.println(e);
 		System.exit(1);
 	} catch (Exception e) {
-
 	}
 
 }
