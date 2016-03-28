@@ -1,2 +1,1 @@
-# CO2017THREADS
-exercise 2
+CO2017 stuff
