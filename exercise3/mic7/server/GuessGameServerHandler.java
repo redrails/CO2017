@@ -38,10 +38,15 @@ public class GuessGameServerHandler implements Runnable{
 			System.out.println(this.id + " target is " + gs.getTarget());
 			while(gs.finished() == false){
 				try {
+					// System.out.println("++++++++++++++++++++++"+gs.getRemainingTime());
 					gs.guess(Integer.parseInt(in.readLine()));
 					out.write(gs.toString());
 					out.flush();
 					System.out.print(this.id +" "+ gs.toString());
+					if(gs.finished()){
+						out.write("close\n");
+						out.flush();
+					}
 				} catch(Exception e){
 					out.write("Entered value was not a number, please try again.\n");
 					out.flush();

@@ -1,5 +1,6 @@
 import java.io.Writer;
 import java.util.Random;
+import  java.util.concurrent.TimeUnit;
 
 public class GameState implements Runnable {
 	private static Random RANDGEN;
@@ -13,10 +14,11 @@ public class GameState implements Runnable {
 	private boolean isChanged;
 	GuessGameServerHandler ggs;
 	private int lastGuess;
+	private long timeLimit;
 
 	public GameState (int mv, long tl,  GuessGameServerHandler ggsh){
 		this.mv = mv;
-		this.timeRemaining = tl;
+		this.timeLimit = tl + TimeUnit.MILLISECONDS.convert(System.nanoTime(), TimeUnit.NANOSECONDS);
 		this.isFinished = false;
 		this.guessAmount = 0;
 		RANDGEN = new Random();
@@ -47,14 +49,14 @@ public class GameState implements Runnable {
 	}
 
 	public void run(){
-		
+		this.timeRemaining = timeLimit - TimeUnit.MILLISECONDS.convert(System.nanoTime(), TimeUnit.NANOSECONDS);
 	}
 
 	public String toString(){
 		if(lastGuess > targetValue){
-			return String.format("HIGH:%d:%d%n",timeRemaining,guessAmount);
+			return String.format("HIGH:%d:%d%n",getRemainingTime() ,guessAmount);
 		} else if(lastGuess < targetValue){
-			return String.format("LOW:%d:%d%n",timeRemaining,guessAmount);
+			return String.format("LOW:%d:%d%n",getRemainingTime() ,guessAmount);
 		} else if(lastGuess == targetValue){
 			this.isFinished = true;
 			return String.format("WIN:%d%n",guessAmount);
