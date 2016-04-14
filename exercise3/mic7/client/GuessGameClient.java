@@ -11,10 +11,23 @@ public class GuessGameClient {
 			Writer out = new OutputStreamWriter(server.getOutputStream());
 			BufferedReader stdin = new BufferedReader(new InputStreamReader(System.in));
 
-			String guess;
+			String guess = "";
 
 			while(server.isConnected()){
-				System.out.println(in.readLine());
+				// System.out.println(in.readLine());
+				String response = in.readLine();
+				String [] responseFilter = response.split(":");
+				if(responseFilter[0].equals("LOW")){
+					System.out.println("Turn "+responseFilter[2]+": "+guess+" was LOW, "+ responseFilter[1] + " remaining");
+				} else if(responseFilter[0].equals("HIGH")){
+					System.out.println("Turn "+responseFilter[2]+": "+guess+" was HIGH, "+ responseFilter[1] + " remaining");
+				} else if(responseFilter[0].equals("WIN")){
+					System.out.println("Turn "+responseFilter[1]+": WIN");
+				} else if(responseFilter[0].equals("LOSE")){
+					System.out.println("Turn "+responseFilter[1]+": LOSE");
+				} else if(responseFilter[0].equals("ERR")){
+						System.out.println("Please enter a valid number");
+				}
 				System.out.print("Guess a number ");
 				guess = stdin.readLine();
 				out.write(String.format("%s%n",guess));
@@ -32,6 +45,7 @@ public class GuessGameClient {
 			System.err.println(e);
 			System.exit(1);
 		}
+		
 	}
 
 	public GuessGameClient(){

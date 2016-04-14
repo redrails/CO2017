@@ -15,6 +15,7 @@ public class GuessGameServer {
 		ex = (ThreadPoolExecutor) Executors.newCachedThreadPool();
 		try (ServerSocket server = new ServerSocket(port)) {
 			System.out.println("Starting GuessGame server ("+max+", "+time+") on port "+port);
+			System.out.println("Waiting for a connection...");
 			while (true) {
 				Socket client = server.accept();
 
