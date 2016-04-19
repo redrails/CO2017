@@ -51,7 +51,7 @@ public class GameState implements Runnable {
 
 	public void guess(int g){
 		this.lastGuess = g;
-		if(g == targetValue){
+		if(g == targetValue || getRemainingTime()<=0){
 			this.isFinished = true;
 		}
 		this.guessAmount++;
@@ -78,15 +78,17 @@ public class GameState implements Runnable {
 				} else if(serverstatus[0].equals("WIN")){
 					System.out.print(ggs.id+" Game over");
 					break;
+				} else if(serverstatus[0].equals("LOSE")){
+					System.out.println(ggs.id+" - LOSE -"+ ((double)getRemainingTime()/1000)+"s / "+serverstatus[1]);
 				} else if(serverstatus[0].equals("ERR")){
 					if(lastGuess > mv || lastGuess < 0){
-						System.out.print(ggs.id+" "+ lastGuess +" **(ERR out of range) /"+serverstatus[1]);
+						System.out.print(ggs.id+" "+ lastGuess +" **(ERR out of range) -"+ ((double)getRemainingTime()/1000)+"s / "+serverstatus[1]);
 					}
 				}
 
 			} catch (NumberFormatException e){
 				try{
-					System.out.println(ggs.id+" "+ lastGuess +" **(ERR non-integer)");
+					System.out.println(ggs.id+" "+ lastGuess +" **(ERR non-integer) -"+ ((double)getRemainingTime()/1000)+"s / "+guessAmount);
 					ggs.out.write(String.format("ERR:%d%n",guessAmount));
 					ggs.out.flush();
 				} catch (Exception ex){
@@ -115,6 +117,10 @@ public class GameState implements Runnable {
 	}
 
 	public String toString(){
+		if(timeRemaining <= 0){
+			return String.format("LOSE:%d%n", guessAmount);
+
+		}
 		if(lastGuess < 0 || lastGuess > mv){
 			return String.format("ERR:%d%n", guessAmount);
 		} else if(lastGuess > targetValue){
@@ -123,9 +129,7 @@ public class GameState implements Runnable {
 			return String.format("LOW:%.1fs:%d%n", getSecs(getRemainingTime()), guessAmount);
 		} else if(lastGuess == targetValue){
 			return String.format("WIN:%d%n", guessAmount);
-		} else {
-			return String.format("LOSE:%d%n", guessAmount);
-		}
+		} else { return ""; }
 	}
 
 	class Timer implements Runnable {
