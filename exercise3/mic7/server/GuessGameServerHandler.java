@@ -1,18 +1,34 @@
+package CO2017.exercise3.mic7.server;
+
 import java.net.Socket;
 import java.net.*;
 import java.io.*;
 import java.util.*;
 
-public class GuessGameServerHandler implements Runnable{
+/**	
+  * This class will handle each client instance that runs.
+  * This means that the server can handle many client instances.
+  * Each client is assigned an ID, and then a GameState is created for the game instance itself.
+*/
 
-	static char ID = 'A';
-	private GameState gs;
-	Socket client;
-	Writer out;
-	BufferedReader in;
-	private int mv;
-	private long tl;
-	public char id;
+public class GuessGameServerHandler implements Runnable{
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    
+	static char ID = 'A';	// Client unique ID.
+	private GameState gs;	// GameState object.
+	Socket client;			// The socket of the client.
+	Writer out;				// output stream.
+	BufferedReader in;		// input stream.
+	private int mv;			// Maximum value i.e. upper range.
+	private long tl;		// Time limit of the game.
+	public char id;			// Client ID.
+
+	/**
+	  * @method GuessGameServerHandler contructor that takes the params given on connection from client.
+	  *	@param mv - Maximum value of the randomly generated number.
+	  * @param tl - Time limit of the game.
+	  *	@param cl - Socket of the client that connection.
+	  * This method instantiates the input/output buffers to transmit messages and also sets initial params.
+	*/
 
 	public GuessGameServerHandler(int mv, long tl, Socket cl){
 		this.id = ID++;
@@ -30,6 +46,12 @@ public class GuessGameServerHandler implements Runnable{
 			System.exit(1);
 		}
 	}
+
+	/**
+	  * @method run - Concurrent thread to handle client
+	  *	Creates new thread that the GameState will run in and sends an initial start message to
+	  *	the client from the protocol specified.
+	*/
 
 	public void run(){
 		try{
