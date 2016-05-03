@@ -60,7 +60,10 @@ public class GuessGameClient {
 				out.write(String.format("%s%n",guess));
 				out.flush();
 			}
-		} catch (SocketException e){	// See if server closes.
+		} catch(NullPointerException e){	// See if server closes.
+			System.err.println("The server closed the connection.");
+			System.exit(1);
+		} catch (SocketException e){
 			System.out.println("Connection closed");
 			System.exit(1);
 		} catch (UnknownHostException e) {	// Catch exception if the host being connected to doesn't exist.

@@ -106,7 +106,7 @@ public class GameState implements Runnable {
 				} else if(serverstatus[0].equals("LOW")){
 					System.out.print(ggs.id +" "+ lastGuess +" (LOW)-"+serverstatus[1]+"/"+serverstatus[2]);
 				} else if(serverstatus[0].equals("WIN")){
-					System.out.print(ggs.id+" Game over");
+					System.out.print(ggs.id+" "+ this.getTarget() + "(WIN)-"+ ((double)getRemainingTime()/1000)+"s / "+serverstatus[1]);
 					break;
 				} else if(serverstatus[0].equals("LOSE")){
 					System.out.println(ggs.id+" - LOSE -"+ ((double)getRemainingTime()/1000)+"s / "+serverstatus[1]);
