@@ -20,7 +20,7 @@ public class GuessGameServer {
 	public static void main(String[] args) throws IOException{
 		int port = Integer.parseInt(args[0]);	// Specified port on running server.
 		int max = Integer.parseInt(args[1]);	// Specified max value on running server.
-		int time = Integer.parseInt(args[2]);	// Specified time limit on running server.
+		int time = Integer.parseInt(args[2]) * 1000;	// Specified time limit on running server.
 		ex = (ThreadPoolExecutor) Executors.newCachedThreadPool();	// ThreadPool instance.
 		try (ServerSocket server = new ServerSocket(port)) {	// Start the server on the given port. 
 			System.out.println("Starting GuessGame server ("+max+", "+time+") on port "+port); // Out message.
@@ -35,6 +35,7 @@ public class GuessGameServer {
 				System.out.printf("%s connection: %s%n", ggsh.id, clientAddress);	// Server output info including client id and address
 				System.out.printf("%s start watching %n", ggsh.id);					// Server output into
 			}
+
 		} catch (IOException e) {
 			System.err.println(e);
 		}

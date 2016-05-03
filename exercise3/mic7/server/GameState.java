@@ -96,6 +96,7 @@ public class GameState implements Runnable {
 				ggs.out.write(this.toString());
 				ggs.out.flush();
 
+
 				String [] serverstatus = this.toString().split(":");	// From the server response, filter all the information that the protocol includes
 				
 				// The guards for the different game states possible, each prints a user message as required. 
